@@ -1,0 +1,25 @@
+<!DOCTYPE HTML>
+<html>
+
+  <head>
+    <title>Gavrilo Princip</title>
+    <script type="text/javascript" src="elm.js"></script>
+    <link rel="stylesheet" href="style.css">
+  </head>
+
+  <body>
+  </body>
+
+  <script type="text/javascript">
+  var server = "http://localhost:9000";
+    var gameId = parseInt(window.location.search.substring(1));
+
+    if (!isNaN(gameId)) {
+      Elm.fullscreen(Elm.App, {
+        server: server,
+        gameId: gameId
+      });
+    }
+  </script>
+
+</html>
