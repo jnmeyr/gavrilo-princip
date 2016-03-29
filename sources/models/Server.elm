@@ -1,3 +1,4 @@
 module Server (Server) where
 
-type alias Server = String
+type alias Server =
+  String

@@ -1,32 +1,43 @@
 module Communication (getBoard, postOrders) where
 
-import Effects exposing (Effects, task)
-import Http    exposing (Body, get, post, string)
-import Task    exposing (toMaybe, map)
+import Effects               exposing (Effects, task)
+import Http                  exposing (Body, get, post)
+import Task                  exposing (toMaybe, map)
+import Json.Encode as Encode exposing (encode, object)
 
-import Orders  exposing (Orders)
-import Server  exposing (Server)
-import GameId  exposing (GameId)
-import Board   exposing (board)
-import Actions exposing (Action(..))
+import Model                 exposing (Model)
+import Board                 exposing (board)
+import Actions               exposing (Action(..))
 
-url : Server -> GameId -> String -> String
-url server gameId action =
-  server ++ "/" ++ toString gameId ++ "/" ++ action
+url : Model -> String -> String
+url model action =
+  model.server ++ "/" ++ toString model.gameId ++ "/" ++ action
 
-getBoard : Server -> GameId -> Effects Action
-getBoard server gameId =
-  get board (url server gameId "board")
+getBoard : Model -> Effects Action
+getBoard model =
+  get board (url model "board")
     |> toMaybe
     |> map GetBoardResponse
     |> task
 
-body : Orders -> Body
-body = string
+body : Model -> Body
+body model =
+  Http.string <|
+    encode 0 <|
+      object
+        [
+          ("austria", Encode.string model.austria),
+          ("england", Encode.string model.england),
+          ("france", Encode.string model.france),
+          ("germany", Encode.string model.germany),
+          ("italy", Encode.string model.italy),
+          ("russia", Encode.string model.russia),
+          ("turkey", Encode.string model.turkey)
+        ]
 
-postOrders : Server -> GameId -> Orders -> Effects Action
-postOrders server gameId orders =
-  post board (url server gameId "orders") (body orders)
+postOrders : Model -> Effects Action
+postOrders model =
+  post board (url model "orders") (body model)
     |> toMaybe
     |> map PostOrdersResponse
     |> task

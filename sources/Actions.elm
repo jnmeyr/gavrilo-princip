@@ -1,10 +1,11 @@
 module Actions (Action(..)) where
 
-import Orders exposing (Orders)
-import Board exposing (Board)
+import Country exposing (Country(..))
+import Board   exposing (Board)
+import Orders  exposing (Orders)
 
 type Action =
-  SetOrders Orders |
+  SetOrders Country Orders |
   GetBoardRequest |
   GetBoardResponse (Maybe Board) |
   PostOrdersRequest |

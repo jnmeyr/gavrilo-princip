@@ -1,6 +1,10 @@
 module Orders (Orders, orders) where
 
-type alias Orders = String
+import Country exposing (Country(..))
+
+type alias Orders =
+  String
 
 orders : Orders
-orders = ""
+orders =
+  ""
