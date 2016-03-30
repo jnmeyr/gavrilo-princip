@@ -1,23 +1,31 @@
-module Communication (getBoard, postOrders) where
+module Communication (getTime, getProvinces, postOrders) where
 
-import Effects               exposing (Effects, task)
-import Http                  exposing (Body, get, post)
-import Task                  exposing (toMaybe, map)
-import Json.Encode as Encode exposing (encode, object)
+import Effects                       exposing (Effects, task)
+import Http                          exposing (Body, get, post)
+import Task                          exposing (toMaybe, map)
+import Json.Encode      as Encode    exposing (encode, object)
 
-import Model                 exposing (Model)
-import Board                 exposing (board)
-import Actions               exposing (Action(..))
+import Model                         exposing (Model)
+import Models.Time      as Time      exposing (Time, time)
+import Models.Provinces as Provinces exposing (provinces)
+import Actions                       exposing (Action(..))
 
 url : Model -> String -> String
 url model action =
-  model.server ++ "/" ++ toString model.gameId ++ "/" ++ action
+  model.server ++ "/" ++ toString model.game ++ "/" ++ action
 
-getBoard : Model -> Effects Action
-getBoard model =
-  get board (url model "board")
+getTime : Model -> Effects Action
+getTime model =
+  get time (url model "time")
     |> toMaybe
-    |> map GetBoardResponse
+    |> map GetTimeResponse
+    |> task
+
+getProvinces : Model -> Effects Action
+getProvinces model =
+  get provinces (url model "provinces")
+    |> toMaybe
+    |> map GetProvincesResponse
     |> task
 
 body : Model -> Body
@@ -26,18 +34,18 @@ body model =
     encode 0 <|
       object
         [
-          ("austria", Encode.string model.austria),
-          ("england", Encode.string model.england),
-          ("france", Encode.string model.france),
-          ("germany", Encode.string model.germany),
-          ("italy", Encode.string model.italy),
-          ("russia", Encode.string model.russia),
-          ("turkey", Encode.string model.turkey)
+          ("a", Encode.string model.austria),
+          ("e", Encode.string model.england),
+          ("f", Encode.string model.france),
+          ("g", Encode.string model.germany),
+          ("i", Encode.string model.italy),
+          ("r", Encode.string model.russia),
+          ("t", Encode.string model.turkey)
         ]
 
 postOrders : Model -> Effects Action
 postOrders model =
-  post board (url model "orders") (body model)
+  post time (url model "orders") (body model)
     |> toMaybe
     |> map PostOrdersResponse
     |> task

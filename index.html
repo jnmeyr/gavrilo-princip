@@ -12,12 +12,12 @@
 
   <script type="text/javascript">
   var server = "http://localhost:9000";
-    var gameId = parseInt(window.location.search.substring(1));
+    var game = parseInt(window.location.search.substring(1));
 
-    if (!isNaN(gameId)) {
+    if (!isNaN(game)) {
       Elm.fullscreen(Elm.App, {
         server: server,
-        gameId: gameId
+        game: game
       });
     }
   </script>

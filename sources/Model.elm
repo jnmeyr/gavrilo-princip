@@ -1,15 +1,17 @@
 module Model (Model, model) where
 
-import Orders exposing (Orders, orders)
-import Server exposing (Server)
-import GameId exposing (GameId)
-import Board  exposing (Board)
+import Models.Orders    as Order     exposing (Orders, orders)
+import Models.Server    as Server    exposing (Server)
+import Models.Game      as Game      exposing (Game)
+import Models.Time      as Time      exposing (Time)
+import Models.Provinces as Provinces exposing (Provinces)
 
 type alias Model =
   {
     server : Server,
-    gameId : Int,
-    board : Maybe Board,
+    game : Game,
+    time : Maybe Time,
+    provinces : Maybe Provinces,
     austria : Orders,
     england : Orders,
     france : Orders,
@@ -19,12 +21,13 @@ type alias Model =
     turkey : Orders
   }
 
-model : Server -> GameId -> Model
-model server gameId =
+model : Server -> Game -> Model
+model server game =
   {
     server = server,
-    gameId = gameId,
-    board = Nothing,
+    game = game,
+    time = Nothing,
+    provinces = Nothing,
     austria = orders,
     england = orders,
     france = orders,

@@ -1,12 +1,12 @@
 module Update (update) where
 
-import Effects exposing (Effects, none)
+import Effects                   exposing (Effects, none)
 
-import Actions       exposing (Action(..))
-import Country       exposing (Country(..))
-import Orders        exposing (Orders, orders)
-import Model         exposing (Model)
-import Communication exposing (getBoard, postOrders)
+import Actions                   exposing (Action(..))
+import Model                     exposing (Model)
+import Models.Country as Country exposing (Country(..))
+import Models.Orders  as Orders  exposing (Orders, orders)
+import Communication             exposing (getTime, getProvinces, postOrders)
 
 update : Action -> Model -> (Model, Effects Action)
 update action model =
@@ -30,16 +30,29 @@ update action model =
             { model | turkey = orders },
         none
       )
-    GetBoardRequest ->
+    GetTimeRequest ->
       (
         model,
-        getBoard model
+        getTime model
       )
-    GetBoardResponse (Just board) ->
+    GetTimeResponse (Just time) ->
       (
         {
           model |
-          board = Just board
+          time = Just time
+        },
+        getProvinces model
+      )
+    GetProvincesRequest ->
+      (
+        model,
+        getProvinces model
+      )
+    GetProvincesResponse (Just provinces) ->
+      (
+        {
+          model |
+          provinces = Just provinces
         },
         none
       )
@@ -48,11 +61,11 @@ update action model =
         model,
         postOrders model
       )
-    PostOrdersResponse (Just board) ->
+    PostOrdersResponse (Just time) ->
       (
         {
           model |
-          board = Just board,
+          time = Just time,
           austria = orders,
           england = orders,
           france = orders,
@@ -61,7 +74,7 @@ update action model =
           russia = orders,
           turkey = orders
         },
-        none
+        getProvinces model
       )
     _ ->
       (

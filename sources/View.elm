@@ -1,14 +1,14 @@
 module View (view) where
 
 import Html                          exposing (Html, div, button, text, textarea)
-import Html.Events as Events         exposing (onClick, on, targetValue)
+import Html.Events     as Events     exposing (onClick, on, targetValue)
 import Html.Attributes as Attributes exposing (value)
 import Signal                        exposing (Address, message)
 
 import Model                         exposing (Model)
-import Country                       exposing (Country(..))
+import Models.Country  as Country    exposing (Country(..))
+import Models.Orders   as Orders     exposing (Orders)
 import Actions                       exposing (Action(..))
-import Orders                        exposing (Orders)
 
 orders : Address Action -> Country -> Orders -> Html
 orders address country orders =
@@ -25,7 +25,8 @@ view : Address Action -> Model -> Html
 view address model =
   div []
     [
-      text <| toString model.board,
+      text <| toString model.time,
+      text <| toString model.provinces,
       orders address Austria model.austria,
       orders address England model.england,
       orders address France model.france,

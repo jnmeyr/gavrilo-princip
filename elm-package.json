@@ -6,7 +6,7 @@
     "source-directories": [
         ".",
         "./sources",
-        "./sources/models"
+        "./sources/Models"
     ],
     "exposed-modules": [],
     "dependencies": {
