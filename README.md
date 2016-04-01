@@ -6,6 +6,10 @@ A diplomacy board game judge client in Elm.
 
 0.0.1-alpha
 
+### Map Graphic ###
+
+The used map graphic is an edited version of __Martin Asals__ map graphic, published under the [Creative Commons Licence (CC BY-SA 3.0)](https://creativecommons.org/licenses/by-sa/3.0/legalcode).
+
 ### Licence ###
 
 The MIT License (MIT)
