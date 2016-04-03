@@ -7,20 +7,17 @@ import Models.Country  as Country  exposing (Country(..), country)
 import Models.Unit     as Unit     exposing (Unit, unit)
 
 type alias Provinces =
-  {
-    provinces : List
-      {
-        province : Province,
-        country : Maybe Country,
-        unit : Maybe Unit
-      }
-  }
+  List
+    {
+      province : Province,
+      country : Maybe Country,
+      unit : Maybe Unit
+    }
 
 provinces : Decoder Provinces
 provinces =
-  object1 Provinces
-    ("provinces" := list
-      (object3 (\ province country unit -> { province = province, country = country, unit = unit })
-        ("id" := province)
-        ("country" := maybe country)
-        ("unit" := maybe unit)))
+  list
+    (object3 (\ province country unit -> { province = province, country = country, unit = unit })
+      ("province" := province)
+      ("country" := maybe country)
+      ("unit" := maybe unit))
